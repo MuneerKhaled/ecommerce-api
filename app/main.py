@@ -1,37 +1,39 @@
 from fastapi import FastAPI
 
 from .database import Base, engine
-from .routers import products
+from .routers.products import router as product_router
 
 
-# Initialize database
-def initialize_database():
-    Base.metadata.create_all(bind=engine)
+# Setup database
+Base.metadata.create_all(bind=engine)
 
 
-# Initialize database before starting the API
-initialize_database()
-
-
-# FastAPI application instance
-app = FastAPI(
-    title="E-Commerce Service",
-    description="RESTful API for managing an E-Commerce application",
+# Initialize API
+application = FastAPI(
+    title="Online Store API",
     version="1.0.0",
+    description="Backend API for an online store",
 )
 
 
-# Add product routes
-app.include_router(products.router)
+# Connect product endpoints
+application.include_router(product_router)
 
 
-# API root
-@app.get("/")
-def root():
-    return {"message": "Welcome to the E-Commerce API"}
+# Default route
+@application.get("/")
+def index():
+    return {
+        "message": "Online Store API is active"
+    }
 
 
-# API health status
-@app.get("/health")
-def health():
-    return {"status": "OK"}
+# Server status route
+@application.get("/health")
+def status():
+    return {
+        "status": "up"
+    }
+
+
+app = application
