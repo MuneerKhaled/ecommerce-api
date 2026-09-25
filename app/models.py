@@ -1,36 +1,19 @@
-from sqlalchemy import Column, Float, Integer, String
+from sqlalchemy import Column, Integer, String, Float
 
 from .database import Base
 
 
-class Product(Base):
-    """Database model representing a product."""
+class Job(Base):
+    """Model for storing job information."""
 
-    __tablename__ = "products"
+    __tablename__ = "jobs"
 
-    id = Column(
-        Integer,
-        primary_key=True,
-        index=True,
-    )
+    id = Column(Integer, primary_key=True, index=True)
 
-    name = Column(
-        String,
-        nullable=False,
-    )
+    title = Column(String, nullable=False)
 
-    description = Column(
-        String,
-        nullable=False,
-    )
+    description = Column(String, nullable=False)
 
-    price = Column(
-        Float,
-        nullable=False,
-    )
+    salary = Column(Float, nullable=False)
 
-    stock = Column(
-        Integer,
-        default=0,
-        nullable=False,
-    )
+    vacancies = Column(Integer, nullable=False, default=1)
