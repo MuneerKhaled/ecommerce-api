@@ -40,4 +40,5 @@ def check_status():
     }
 
 
+# Application instance
 app = api
