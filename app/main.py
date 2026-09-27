@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from .database import Base, engine
-from .routers.tasks import router
+from .routers.products import router
 
 
 # Prepare database
@@ -14,13 +14,13 @@ setup_database()
 
 # Create application
 api = FastAPI(
-    title="Task Management Backend",
+    title="E-Commerce Backend",
     version="1.0.0",
-    description="REST API backend for managing users and tasks",
+    description="API backend for an online shopping system",
 )
 
 
-# Attach task routes
+# Attach product routes
 api.include_router(router)
 
 
@@ -28,7 +28,7 @@ api.include_router(router)
 @api.get("/")
 def welcome():
     return {
-        "message": "Welcome to the Task Management API"
+        "message": "Welcome to the E-Commerce API"
     }
 
 
@@ -36,10 +36,8 @@ def welcome():
 @api.get("/health")
 def check_status():
     return {
-        "status": "running",
-        "service": "task-management-api"
+        "status": "running"
     }
 
 
-# Application instance
 app = api
