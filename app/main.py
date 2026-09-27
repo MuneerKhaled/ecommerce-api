@@ -1,43 +1,70 @@
 from fastapi import FastAPI
 
 from .database import Base, engine
-from .routers.products import router
+from .routers.products import router as products_router
 
 
-# Prepare database
-def setup_database():
+# ============================================================
+# Database Setup
+# ============================================================
+
+def setup_database() -> None:
+    """
+    Create database tables defined by SQLAlchemy models.
+    """
     Base.metadata.create_all(bind=engine)
 
 
+# Initialize database
 setup_database()
 
 
-# Create application
-api = FastAPI(
-    title="E-Commerce Backend",
+# ============================================================
+# FastAPI Application
+# ============================================================
+
+app = FastAPI(
+    title="E-Commerce Backend API",
     version="1.0.0",
-    description="API backend for an online shopping system",
+    description="Backend API for an online e-commerce system.",
 )
 
 
-# Attach product routes
-api.include_router(router)
+# ============================================================
+# API Routes
+# ============================================================
+
+app.include_router(
+    products_router,
+    prefix="/products",
+    tags=["Products"],
+)
 
 
-# Welcome endpoint
-@api.get("/")
-def welcome():
+# ============================================================
+# Root Endpoint
+# ============================================================
+
+@app.get("/")
+def welcome() -> dict:
+    """
+    API welcome endpoint.
+    """
     return {
-        "message": "Welcome to the E-Commerce API"
+        "message": "Welcome to the E-Commerce API",
+        "version": "1.0.0",
     }
 
 
-# Health endpoint
-@api.get("/health")
-def check_status():
+# ============================================================
+# Health Check
+# ============================================================
+
+@app.get("/health")
+def health_check() -> dict:
+    """
+    Check whether the API is running.
+    """
     return {
-        "status": "running"
+        "status": "healthy",
     }
-
-
-app = api
