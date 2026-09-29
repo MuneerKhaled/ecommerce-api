@@ -5,18 +5,18 @@ from .routers.products import router as products_router
 
 
 # ============================================================
-# Database Setup
+# Database Configuration
 # ============================================================
 
-def setup_database() -> None:
+def initialize_database() -> None:
     """
-    Create all database tables defined by SQLAlchemy models.
+    Create all database tables defined by the SQLAlchemy models.
     """
     Base.metadata.create_all(bind=engine)
 
 
 # Initialize database
-setup_database()
+initialize_database()
 
 
 # ============================================================
@@ -26,12 +26,12 @@ setup_database()
 app = FastAPI(
     title="E-Commerce API",
     version="1.0.0",
-    description="REST API for managing products in an e-commerce system.",
+    description="REST API for managing products in an e-commerce application.",
 )
 
 
 # ============================================================
-# API Routes
+# Product Routes
 # ============================================================
 
 app.include_router(
@@ -46,26 +46,27 @@ app.include_router(
 # ============================================================
 
 @app.get("/")
-def welcome() -> dict:
+def root() -> dict:
     """
-    Return basic API information.
+    Return basic information about the API.
     """
     return {
         "message": "Welcome to the E-Commerce API",
         "version": "1.0.0",
-        "docs": "/docs",
+        "documentation": "/docs",
     }
 
 
 # ============================================================
-# Health Check
+# Health Check Endpoint
 # ============================================================
 
 @app.get("/health")
 def health_check() -> dict:
     """
-    Check whether the API is running.
+    Check whether the API is running correctly.
     """
     return {
         "status": "healthy",
+        "message": "API is running",
     }
