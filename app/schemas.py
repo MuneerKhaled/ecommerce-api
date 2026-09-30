@@ -1,48 +1,51 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 # ============================================================
-# Product Create Schema
+# Product Input Schema
 # ============================================================
 
 class ProductCreate(BaseModel):
-    """
-    Schema for creating a new product.
-    """
+    """Data required to create a product."""
 
     name: str = Field(
+        ...,
         min_length=1,
         max_length=100,
+        description="Product name",
     )
 
     description: str = Field(
+        ...,
         min_length=1,
         max_length=500,
+        description="Product description",
     )
 
     price: float = Field(
+        ...,
         gt=0,
+        description="Product price",
     )
 
     stock: int = Field(
+        ...,
         ge=0,
+        description="Available stock quantity",
     )
 
 
 # ============================================================
-# Product Response Schema
+# Product Output Schema
 # ============================================================
 
 class ProductResponse(BaseModel):
-    """
-    Schema for returning product information.
-    """
+    """Product data returned by the API."""
+
+    model_config = ConfigDict(from_attributes=True)
 
     id: int
     name: str
     description: str
     price: float
     stock: int
-
-    class Config:
-        from_attributes = True
