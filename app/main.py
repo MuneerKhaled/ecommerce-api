@@ -1,72 +1,66 @@
 from fastapi import FastAPI
 
 from .database import Base, engine
-from .routers.products import router as products_router
+from .routers.products import router as product_routes
 
 
 # ============================================================
-# Database Configuration
+# Database Initialization
 # ============================================================
 
-def initialize_database() -> None:
-    """
-    Create all database tables defined by the SQLAlchemy models.
-    """
+def create_database() -> None:
+    """Create the required database tables."""
     Base.metadata.create_all(bind=engine)
 
 
-# Initialize database
-initialize_database()
+create_database()
 
 
 # ============================================================
-# FastAPI Application
+# Application Setup
 # ============================================================
 
 app = FastAPI(
-    title="E-Commerce API",
+    title="Product Management API",
+    description="Backend API for creating and managing e-commerce products.",
     version="1.0.0",
-    description="REST API for managing products in an e-commerce application.",
 )
 
 
 # ============================================================
-# Product Routes
+# API Routes
 # ============================================================
 
 app.include_router(
-    products_router,
+    product_routes,
     prefix="/products",
-    tags=["Products"],
+    tags=["Product Management"],
 )
 
 
 # ============================================================
-# Root Endpoint
+# API Information
 # ============================================================
 
 @app.get("/")
-def root() -> dict:
-    """
-    Return basic information about the API.
-    """
+def home():
+    """Display basic API information."""
     return {
-        "message": "Welcome to the E-Commerce API",
-        "version": "1.0.0",
-        "documentation": "/docs",
+        "name": "Product Management API",
+        "version": app.version,
+        "status": "running",
+        "docs": "/docs",
     }
 
 
 # ============================================================
-# Health Check Endpoint
+# Server Health
 # ============================================================
 
 @app.get("/health")
-def health_check() -> dict:
-    """
-    Check whether the API is running correctly.
-    """
+def health():
+    """Return the current API health status."""
     return {
-        "status": "healthy",
-        "message": "API is running",
+        "status": "ok",
+        "service": "product-api",
     }
