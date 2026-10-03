@@ -5,7 +5,7 @@ from .database import Base, engine
 from .routers import products
 
 
-# Create database tables
+# Initialize database
 Base.metadata.create_all(bind=engine)
 
 
@@ -17,10 +17,11 @@ app = FastAPI(
 )
 
 
-# Register product routes
+# Include API routers
 app.include_router(products.router)
 
 
+# Root endpoint
 @app.get("/")
 def home():
     return {
