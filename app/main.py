@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI
 
 from .database import Base, engine
@@ -8,7 +9,7 @@ from .routers import products
 Base.metadata.create_all(bind=engine)
 
 
-# Create FastAPI applicaton
+# Create FastAPI application
 app = FastAPI(
     title="E-Commerce API",
     description="REST API for managing e-commerce products",
