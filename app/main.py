@@ -4,26 +4,41 @@ from .database import Base, engine
 from .routers import products
 
 
-# Create database tables
+# Initialize database
 Base.metadata.create_all(bind=engine)
 
 
-# Create FastAPI applicaton
+# Initialize FastAPI application
 app = FastAPI(
     title="E-Commerce API",
-    description="REST API for managing e-commerce products",
-    version="1.0.0",
+    description="A RESTful API for managing e-commerce products",
+    version="1.1.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
 )
 
 
-# Register routes
-app.include_router(products.router)
+# Register API routers
+app.include_router(
+    products.router,
+    tags=["Products"]
+)
 
 
 # Root endpoint
-@app.get("/")
+@app.get("/", tags=["General"])
 def root():
     return {
-        "message": "E-Commerce API is running",
-        "status": "success"
+        "message": "Welcome to E-Commerce API",
+        "version": "1.1.0",
+        "status": "running"
+    }
+
+
+# Health check endpoint
+@app.get("/health", tags=["General"])
+def health_check():
+    return {
+        "status": "healthy",
+        "service": "E-Commerce API"
     }
