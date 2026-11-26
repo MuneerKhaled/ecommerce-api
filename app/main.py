@@ -12,7 +12,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="E-Commerce API",
     description="API for managing products in an online store",
-    version="1.3.0",
+    version="1.2.0",
     docs_url="/docs",
     redoc_url="/redoc",
 )
@@ -30,8 +30,8 @@ app.include_router(
 @app.get("/", tags=["General"])
 def home():
     return {
-        "message": "Welcome to E-Commerce API",
-        "version": "1.3.0",
+        "message": "E-Commerce API is online",
+        "version": "1.2.0",
         "status": "success"
     }
 
@@ -42,15 +42,4 @@ def health():
     return {
         "service": "E-Commerce API",
         "status": "operational"
-    }
-
-
-# API information endpoint
-@app.get("/info", tags=["General"])
-def info():
-    return {
-        "name": "E-Commerce API",
-        "description": "API for managing products in an online store",
-        "documentation": "/docs",
-        "version": "1.3.0"
     }
